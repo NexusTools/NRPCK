@@ -50,6 +50,14 @@ uchar nrpck_drv_console_nextkey(NRPCKDevice* device) {
 	return 0;
 }
 
+void nrpck_drv_console_display_describe(NRPCKDevice*, char* buffer) {
+	strcpy(buffer, "80x50 Text Display Device");
+}
+
+void nrpck_drv_console_input_describe(NRPCKDevice*, char* buffer) {
+	strcpy(buffer, "Buffered Text Input Device");
+}
+
 void nrpck_init_driver_console() {
 	nrpck_drv_console_display.name = "RedPower Console Display Driver";
 	nrpck_drv_console_display.device_type = TEXT_DISPLAY_TYPE;
@@ -60,11 +68,13 @@ void nrpck_init_driver_console() {
 	nrpck_drv_console_display.methods[3] = nrpck_drv_console_movecursor;
 	nrpck_drv_console_display.methods[4] = nrpck_drv_console_setcursor;
 	nrpck_drv_console_display.methods[5] = nrpck_drv_console_size;
+	nrpck_drv_console_display.methods[0xF] = nrpck_drv_console_display_describe;
 	nrpck_device_register_driver(&nrpck_drv_console_display);
 	
 	nrpck_drv_console_keyboard.name = "RedPower Console Keyboard Driver";
 	nrpck_drv_console_keyboard.device_type = TEXT_INPUT_TYPE;
 	nrpck_drv_console_keyboard.detect = nrpck_drv_console_detect;
 	nrpck_drv_console_keyboard.methods[0] = nrpck_drv_console_nextkey;
+	nrpck_drv_console_keyboard.methods[0xF] = nrpck_drv_console_input_describe;
 	nrpck_device_register_driver(&nrpck_drv_console_keyboard);
 }

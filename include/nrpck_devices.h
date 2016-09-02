@@ -10,11 +10,12 @@ typedef struct NRPCKDevice {
 	union NRPCKDeviceData {
 		Disk disk;
 		Console console;
-		IOExpander ioExpander;
-		// TODO: Sorttron
+		IOExpander ioexpander;
 		Activator activator;
+		Sortron sorttron;
 		Matrix matrix;
 		Modem modem;
+		
 		uchar raw[0xFF];
 	} data;
 	uchar ID;
@@ -24,12 +25,12 @@ typedef struct NRPCKDeviceDriver {
 	const char* name;
 	uchar device_type;
 	bool (*detect)(NRPCKDevice*);
-	void* methods[0xF];
+	void* methods[0x10];
 } NRPCKDeviceDriver;
 
 typedef struct NRPCKDeviceRef {
 	NRPCKDevice* device;
-	NRPCKDeviceDriver* drivers[0x10];
+	NRPCKDeviceDriver* drivers[0xF];
 	uchar rbport;
 } NRPCKDeviceRef;
 
@@ -62,6 +63,6 @@ schar nrpck_device_scanfordriver(uchar min_port, uchar max_port, uchar device_ty
 uchar nrpck_device_knownid(uchar port);
 
 #define nrpck_device_drv_describe(device, driver, buffer) \
-	((void(*)(NRPCKDevice*, char*)))driver->methods[0xf])(device, buffer);
+	((void(*)(NRPCKDevice*, char*))driver->methods[0xF])(device, buffer)
 
 #endif

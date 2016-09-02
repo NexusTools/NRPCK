@@ -3,18 +3,25 @@
 
 #include "nrpck_devices.h"
 
-uint nrpck_drive_drv_size(NRPCKDevice* device, NRPCKDeviceDriver* driver);
+#define nrpck_drive_drv_size(device, driver) \
+	return ((uint(*)(NRPCKDevice*))driver->methods[0])(device)
 
-int nrpck_drive_drv_read(NRPCKDevice* device, NRPCKDeviceDriver* driver, uint pos, char* buffer, uchar len);
+#define nrpck_drive_drv_read(device, driver, pos, buffer, len) \
+	((int(*)(NRPCKDevice*, uint, char*, uint))driver->methods[1])(device, pos, buffer, len)
 
-int nrpck_drive_drv_write(NRPCKDevice* device, NRPCKDeviceDriver* driver, uint pos, char* buffer, uchar len);
+#define nrpck_drive_drv_write(device, driver, pos, buffer, len) \
+	((int(*)(NRPCKDevice*, uint, char*, uint))driver->methods[2])(device, pos, buffer, len)
 
-int nrpck_drive_drv_fastwrite(NRPCKDevice* device, NRPCKDeviceDriver* driver, uint pos, char* buffer, uchar len);
+#define nrpck_drive_drv_fastwrite(device, driver, pos, buffer, len) \
+	((int(*)(NRPCKDevice*, uint, char*, uint))driver->methods[3])(device, pos, buffer, len)
 
-schar nrpck_drive_drv_getlabel(NRPCKDevice* device, NRPCKDeviceDriver* driver, char* buffer);
+#define nrpck_drive_drv_getlabel(device, driver, buffer) \
+	((schar(*)(NRPCKDevice*, char*))driver->methods[4])(device, buffer)
 
-schar nrpck_drive_drv_setlabel(NRPCKDevice* device, NRPCKDeviceDriver* driver, char* buffer);
+#define nrpck_drive_drv_setlabel(device, driver, buffer) \
+	((schar(*)(NRPCKDevice*, char*))driver->methods[5])(device, buffer)
 
-schar nrpck_drive_drv_getserial(NRPCKDevice* device, NRPCKDeviceDriver* driver, char* buffer);
+#define nrpck_drive_drv_getserial(device, driver, buffer) \
+	((schar(*)(NRPCKDevice*, char*))driver->methods[6])(device, buffer)
 
 #endif

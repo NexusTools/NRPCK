@@ -26,6 +26,9 @@ void __fastcall__ nrpck_memory_dealloc(void*);
 #ifndef NRPCK_NO_IOEXPANDER
 #include "nrpck_ioexpander.h"
 #endif
+#ifndef NRPCK_NO_SORTTRON
+#include "nrpck_sorttron.h"
+#endif
 #ifndef NRPCK_NO_SOCKET
 #include "nrpck_socket.h"
 #endif

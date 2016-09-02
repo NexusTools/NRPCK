@@ -1,3 +1,8 @@
+#ifndef NRPCK_DEVICE_STRUCTS
+#define NRPCK_DEVICE_STRUCTS
+
+#include "nrpck_types.h"
+
 typedef struct Console {
 	char line;
 	char cursor_x;
@@ -98,7 +103,43 @@ typedef struct Modem {
 	uchar wbuffer;
 } Modem;
 
-#define CONSOLE_ROUTER_EFFECT_NONE		0x00
-#define CONSOLE_ROUTER_EFFECT_CENTERED	0x01
-#define CONSOLE_ROUTER_EFFECT_FILLBG	0x02
-#define CONSOLE_ROUTER_EFFECT_ALL		0xFF
+#define SORT_SUCCEEDED	= 0
+#define SORT_COUNT		= 1
+#define SORT_LOAD		= 2
+#define SORT_PULL		= 3
+#define SORT_MATCH		= 4
+#define SORT_FAILED		= 0xFF
+
+typedef enum {
+	PAINT_NONE    = 0,
+	PAINT_WHITE 	= 1,
+	PAINT_ORANGE 	= 2,
+	PAINT_MAGENTA = 3,
+	PAINT_LBLUE	= 4,
+	PAINT_YELLOW 	= 5,
+	PAINT_LIME 	= 6,
+	PAINT_PINK 	= 7,
+	PAINT_GRAY    = 8,
+	PAINT_LGRAY   = 9,
+	PAINT_CYAN 	= 10,
+	PAINT_PURPLE 	= 11,
+	PAINT_BLUE 	= 12,
+	PAINT_BROWN 	= 13,
+	PAINT_GREEN 	= 14,
+	PAINT_RED 	= 15,
+	PAINT_BLACK 	= 16
+} SortItemColor;
+
+typedef struct Sortron {
+	uchar command;
+	uchar count;
+	uint slot;
+	uint itemid;
+	uint unused;
+	uint damage;
+	uint maxdamage;
+	uchar outputColor;
+	uchar inputColor;
+} Sortron;
+
+#endif

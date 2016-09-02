@@ -31,7 +31,7 @@ const char* nrpck_device_name(uchar id) {
 			return "IO Expander";
 
 		case SORT_TRON_ID:
-			return "SortTron";
+			return "Sorttron";
 
 		case RETRIEVER_ID:
 			return "Retriever";

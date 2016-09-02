@@ -2,6 +2,7 @@
 #include "nrpck_drv_matrix.h"
 
 #include <string.h>
+#include <stdio.h>
 
 NRPCKDeviceDriver nrpck_drv_matrix_display;
 
@@ -49,6 +50,13 @@ void nrpck_drv_matrix_size(NRPCKDevice* device, uchar* width, uchar* height) {
 		*height = device->data.matrix.height;
 }
 
+void nrpck_drv_matrix_describe(NRPCKDevice* device, char* buffer) {
+	uchar width, height;
+	
+	nrpck_drv_matrix_size(device, &width, &height);
+	sprintf(buffer, "%ux%u Text Display Device", width, height);
+}
+
 void nrpck_init_driver_matrix() {
 	nrpck_drv_matrix_display.name = "AeroScripts Matrix Display Driver";
 	nrpck_drv_matrix_display.device_type = TEXT_DISPLAY_TYPE;
@@ -59,5 +67,6 @@ void nrpck_init_driver_matrix() {
 	nrpck_drv_matrix_display.methods[3] = nrpck_drv_matrix_movecursor;
 	nrpck_drv_matrix_display.methods[4] = nrpck_drv_matrix_setcursor;
 	nrpck_drv_matrix_display.methods[5] = nrpck_drv_matrix_size;
+	nrpck_drv_matrix_display.methods[0xF] = nrpck_drv_matrix_describe;
 	nrpck_device_register_driver(&nrpck_drv_matrix_display);
 }

@@ -1,9 +1,10 @@
-
 #include "nrpck_devices.h"
 #include "nrpck_drv_disk.h"
 #include "nrpck_errors.h"
+#include "nrpck_types.h"
 
 #include <string.h>
+#include <stdio.h>
 
 NRPCKDeviceDriver nrpck_drv_disk;
 
@@ -11,7 +12,7 @@ bool nrpck_drv_disk_detect(NRPCKDevice* device) {
 	return device->ID == DISK_ID;
 }
 
-unsigned int nrpck_drv_disk_size(NRPCKDevice* device) {
+uint nrpck_drv_disk_size(NRPCKDevice* device) {
 	device->data.disk.sector_num = 0;
 	while(1) {
 		device->data.disk.sector_num++;
@@ -22,7 +23,7 @@ unsigned int nrpck_drv_disk_size(NRPCKDevice* device) {
 	}
 }
 
-int nrpck_drv_disk_read(NRPCKDevice* device, unsigned int pos, char* buffer, unsigned char len) {
+int nrpck_drv_disk_read(NRPCKDevice* device, uint pos, char* buffer, uchar len) {
 	unsigned int a, b, c, d;
 	a = pos / 128;
 	b = pos - (a*128);
@@ -42,7 +43,7 @@ int nrpck_drv_disk_read(NRPCKDevice* device, unsigned int pos, char* buffer, uns
 	return len;
 }
 
-int nrpck_drv_disk_write(NRPCKDevice* device, unsigned int pos, char* buffer, unsigned char len) {
+int nrpck_drv_disk_write(NRPCKDevice* device, uint pos, char* buffer, uchar len) {
 	unsigned int a, b, c, d;
 	a = pos / 128;
 	b = pos - (a*128);
@@ -68,7 +69,7 @@ int nrpck_drv_disk_write(NRPCKDevice* device, unsigned int pos, char* buffer, un
 	return len;
 }
 
-int nrpck_drv_disk_fastwrite(NRPCKDevice* device, unsigned int pos, char* buffer, unsigned char len) {
+int nrpck_drv_disk_fastwrite(NRPCKDevice* device, uint pos, char* buffer, uchar len) {
 	unsigned int a, b, c, d;
 	
 	a = pos / 128;
@@ -88,7 +89,7 @@ int nrpck_drv_disk_fastwrite(NRPCKDevice* device, unsigned int pos, char* buffer
 	}
 	return len;
 }
-signed char nrpck_drv_disk_getlabel(NRPCKDevice* device, char* buffer) {
+schar nrpck_drv_disk_getlabel(NRPCKDevice* device, char* buffer) {
 	device->data.disk.command = DISK_READ_NAME;
 	while(device->data.disk.command == DISK_READ_NAME);
 	if(device->data.disk.command == DISK_FAIL)
@@ -96,7 +97,7 @@ signed char nrpck_drv_disk_getlabel(NRPCKDevice* device, char* buffer) {
 	strcpy(buffer, device->data.disk.sector);
 	return strlen(buffer);
 }
-signed char nrpck_drv_disk_setlabel(NRPCKDevice* device, char* buffer) {
+schar nrpck_drv_disk_setlabel(NRPCKDevice* device, char* buffer) {
 	strcpy(device->data.disk.sector, buffer);
 	device->data.disk.command = DISK_WRITE_NAME;
 	while(device->data.disk.command == DISK_WRITE_NAME);
@@ -104,7 +105,7 @@ signed char nrpck_drv_disk_setlabel(NRPCKDevice* device, char* buffer) {
 		return ERROR_GENERIC;
 	return 0;
 }
-signed char nrpck_drv_disk_getserial(NRPCKDevice* device, char* buffer) {
+schar nrpck_drv_disk_getserial(NRPCKDevice* device, char* buffer) {
 	device->data.disk.command = DISK_READ_SERIAL;
 	while(device->data.disk.command == DISK_READ_SERIAL);
 	if(device->data.disk.command == DISK_FAIL)
@@ -112,6 +113,16 @@ signed char nrpck_drv_disk_getserial(NRPCKDevice* device, char* buffer) {
 	memcpy(buffer, device->data.disk.sector, 16);
 	buffer[16] = 0;
 	return 16;
+}
+void nrpck_drv_disk_describe(NRPCKDevice* device, char* buffer) {
+	char serial[17], label[128];
+	
+	strcpy(label, "no media");
+	strcpy(serial, "0000000000000000");
+	nrpck_drv_disk_getserial(device, serial);
+	nrpck_drv_disk_setlabel(device, label);
+
+	sprintf(buffer, "  [%-16s] %s", serial, label);
 }
 void nrpck_init_driver_disk() {
 	nrpck_drv_disk.name = "RedPower Disk Driver";
@@ -124,5 +135,6 @@ void nrpck_init_driver_disk() {
 	nrpck_drv_disk.methods[4] = nrpck_drv_disk_getlabel;
 	nrpck_drv_disk.methods[5] = nrpck_drv_disk_setlabel;
 	nrpck_drv_disk.methods[6] = nrpck_drv_disk_getserial;
+	nrpck_drv_disk.methods[0xF] = nrpck_drv_disk_describe;
 	nrpck_device_register_driver(&nrpck_drv_disk);
 }

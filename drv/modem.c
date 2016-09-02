@@ -60,6 +60,10 @@ void nrpck_drv_modem_setbaudrate(NRPCKDevice* device, uint rate) {
 	device->data.modem.command = 9;
 }
 
+void nrpck_drv_modem_describe(NRPCKDevice*, char* buffer) {
+	strcpy(buffer, "Socket Capable IO Device");
+}
+
 void nrpck_init_driver_modem() {
 	nrpck_drv_modem.name = "AeroScripts Modem Driver";
 	nrpck_drv_modem.device_type = MODEM_TYPE;
@@ -70,5 +74,6 @@ void nrpck_init_driver_modem() {
 	nrpck_drv_modem.methods[3] = nrpck_drv_modem_read;
 	nrpck_drv_modem.methods[4] = nrpck_drv_modem_write;
 	nrpck_drv_modem.methods[5] = nrpck_drv_modem_setbaudrate;
+	nrpck_drv_modem.methods[0xF] = nrpck_drv_modem_describe;
 	nrpck_device_register_driver(&nrpck_drv_modem);
 }
