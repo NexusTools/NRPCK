@@ -7,6 +7,8 @@
 void nrpck_init(void);
 void nrpck_oninit(void (*oninit)(void));
 
+void nrpck_hault(void);
+
 uint nrpck_memory_detect(void);
 uint __fastcall__ nrpck_memory_available(void);
 void* __fastcall__ nrpck_memory_alloc(unsigned char size);
@@ -26,8 +28,8 @@ void __fastcall__ nrpck_memory_dealloc(void*);
 #ifndef NRPCK_NO_IOEXPANDER
 #include "nrpck_ioexpander.h"
 #endif
-#ifndef NRPCK_NO_SORTTRON
-#include "nrpck_sorttron.h"
+#ifndef NRPCK_NO_SORTRON
+#include "nrpck_sortron.h"
 #endif
 #ifndef NRPCK_NO_SOCKET
 #include "nrpck_socket.h"

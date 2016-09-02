@@ -40,7 +40,8 @@ typedef struct NRPCKDeviceRef {
  */
 void nrpck_device_init(void);
 
-const char* nrpck_device_name(uchar id);
+const char* nrpck_driver_type(uchar driver_type);
+const char* nrpck_device_name(uchar device_id);
 
 NRPCKDeviceRef* nrpck_device_map(uchar port);
 

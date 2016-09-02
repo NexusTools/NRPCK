@@ -3,8 +3,11 @@
 
 #define TEXT_DISPLAY_TYPE		0X01
 #define TEXT_INPUT_TYPE			0X02
+#define RETRIEVER_TYPE			0X03
+#define SORTRON_TYPE			0X04
 #define IO_EXPANDER_TYPE		0X05
 #define MODEM_TYPE				0x08
 #define DISK_TYPE				0x0A
+#define POWERED_TYPE			0x0B
 
 #endif

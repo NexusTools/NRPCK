@@ -6,6 +6,16 @@
 #include <string.h>
 #include <stdio.h>
 
+#define DISK_IDLE 	  	   0
+#define DISK_READ_NAME 	   1
+#define DISK_WRITE_NAME    2
+#define DISK_READ_SERIAL   3
+#define DISK_READ 		   4
+#define DISK_WRITE 		   5
+#define DISK_READ_OFFSET   6
+#define DISK_WRITE_OFFSET  7
+#define DISK_FAIL 		   0xFF
+
 NRPCKDeviceDriver nrpck_drv_disk;
 
 bool nrpck_drv_disk_detect(NRPCKDevice* device) {

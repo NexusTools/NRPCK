@@ -32,18 +32,6 @@ typedef struct IOExpander {
 	uchar changes;
 } IOExpander;
 
-typedef enum {
-	DISK_IDLE 	  	   = 0,
-	DISK_READ_NAME 	   = 1,
-	DISK_WRITE_NAME    = 2,
-	DISK_READ_SERIAL   = 3,
-	DISK_READ 		   = 4,
-	DISK_WRITE 		   = 5,
-	DISK_READ_OFFSET   = 6,
-	DISK_WRITE_OFFSET  = 7,
-	DISK_FAIL 		   = 0xFF
-} DiskCommand;
-
 typedef struct Disk {
 	char sector[0x80];
 	unsigned int sector_num;
@@ -103,13 +91,6 @@ typedef struct Modem {
 	uchar wbuffer;
 } Modem;
 
-#define SORT_SUCCEEDED	= 0
-#define SORT_COUNT		= 1
-#define SORT_LOAD		= 2
-#define SORT_PULL		= 3
-#define SORT_MATCH		= 4
-#define SORT_FAILED		= 0xFF
-
 typedef enum {
 	PAINT_NONE    = 0,
 	PAINT_WHITE 	= 1,
@@ -130,14 +111,18 @@ typedef enum {
 	PAINT_BLACK 	= 16
 } SortItemColor;
 
-typedef struct Sortron {
-	uchar command;
-	uchar count;
-	uint slot;
+typedef struct SortronItem {
 	uint itemid;
 	uint unused;
 	uint damage;
 	uint maxdamage;
+} SortronItem;
+
+typedef struct Sortron {
+	uchar command;
+	uchar count;
+	uint slot;
+	SortronItem item;
 	uchar outputColor;
 	uchar inputColor;
 } Sortron;

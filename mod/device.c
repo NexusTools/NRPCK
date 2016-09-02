@@ -15,6 +15,39 @@ uchar nrpck_driver_count = 0;
 uchar nrpck_mapped_port = 0xFF;
 NRPCKDeviceDriver* nrpck_drivers[0x20];
 NRPCKDeviceState nrpck_port_states[0xFF];
+const char* nrpck_driver_type(uchar id) {
+	switch(id) {
+		case 0:
+			return "Nothing";
+			
+		case TEXT_DISPLAY_TYPE:
+			return "Text Display";
+			
+		case TEXT_INPUT_TYPE:
+			return "Text Input";
+			
+		case RETRIEVER_TYPE:
+			return "Item Retriever";
+			
+		case SORTRON_TYPE:
+			return "Item Sorter";
+			
+		case IO_EXPANDER_TYPE:
+			return "IO Expander";
+			
+		case MODEM_TYPE:
+			return "Modem";
+			
+		case DISK_TYPE:
+			return "Disk";
+			
+		case POWERED_TYPE:
+			return "Powered";
+
+		default:
+			return "Unknown";
+	}
+}
 
 const char* nrpck_device_name(uchar id) {
 	switch(id) {
@@ -31,7 +64,7 @@ const char* nrpck_device_name(uchar id) {
 			return "IO Expander";
 
 		case SORT_TRON_ID:
-			return "Sorttron";
+			return "Sortron";
 
 		case RETRIEVER_ID:
 			return "Retriever";
