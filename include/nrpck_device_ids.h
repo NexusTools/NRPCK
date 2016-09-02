@@ -1,0 +1,21 @@
+#ifndef NRPCK_DEVICE_IDS
+#define NRPCK_DEVICE_IDS 1
+
+#define UNPLUGGED_ID			0x00
+#define CONSOLE_ID				0X01
+#define DISK_ID					0X02
+#define IO_EXPANDER_ID			0X03
+#define SORT_TRON_ID			0X04
+#define RETRIEVER_ID			0X05
+#define HARD_DRIVE_ID			0X06
+#define FPU_ID					0X07
+#define SUBSPACE_ACTIVATOR_ID	0X08
+#define MATRIX_ID				0X09
+#define MODEM_ID				0X0A
+// BEGIN VIRTUAL DEVICES
+#define CONSOLE_ROUTER_ID		0xF0
+#define SYS_FILESYSTEM_ID		0xF1
+// END VIRTUAL DEVICES
+#define CPU_ID					0xFF
+
+#endif

@@ -1,0 +1,10 @@
+#ifndef NRPCK_TYPES_IDS
+#define NRPCK_TYPES_IDS 1
+
+#define TEXT_DISPLAY_TYPE		0X01
+#define TEXT_INPUT_TYPE			0X02
+#define IO_EXPANDER_TYPE		0X05
+#define MODEM_TYPE				0x08
+#define DISK_TYPE				0x0A
+
+#endif
