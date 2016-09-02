@@ -72,7 +72,10 @@ schar nrpck_display_boot(const char* banner, uchar port_start, uchar port_end, N
 			goto founddisplay;
 		}
 	
-	goto end;
+	
+	if(yOut)
+		*yOut = y;
+	return ERROR_GENERIC;
 founddisplay:
 	y = nrpck_display_bootscreen(banner, display, displayDriver, width, height);
 	
@@ -113,9 +116,8 @@ founddisplay:
 	}
 	va_end(ap);
 		
-end:
 	if(yOut)
 		*yOut = y;
-	return ERROR_GENERIC;
+	return 0;
 }
 
