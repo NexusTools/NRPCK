@@ -91,29 +91,27 @@ typedef struct Modem {
 	uchar wbuffer;
 } Modem;
 
-typedef enum {
-	PAINT_NONE    = 0,
-	PAINT_WHITE 	= 1,
-	PAINT_ORANGE 	= 2,
-	PAINT_MAGENTA = 3,
-	PAINT_LBLUE	= 4,
-	PAINT_YELLOW 	= 5,
-	PAINT_LIME 	= 6,
-	PAINT_PINK 	= 7,
-	PAINT_GRAY    = 8,
-	PAINT_LGRAY   = 9,
-	PAINT_CYAN 	= 10,
-	PAINT_PURPLE 	= 11,
-	PAINT_BLUE 	= 12,
-	PAINT_BROWN 	= 13,
-	PAINT_GREEN 	= 14,
-	PAINT_RED 	= 15,
-	PAINT_BLACK 	= 16
-} SortItemColor;
+#define SORTRON_PAINT_NONE		0
+#define SORTRON_PAINT_WHITE		1
+#define SORTRON_PAINT_ORANGE	2
+#define SORTRON_PAINT_MAGENTA	3
+#define SORTRON_PAINT_LBLUE		4
+#define SORTRON_PAINT_YELLOW	5
+#define SORTRON_PAINT_LIME		6
+#define SORTRON_PAINT_PINK		7
+#define SORTRON_PAINT_GRAY		8
+#define SORTRON_PAINT_LGRAY		9
+#define SORTRON_PAINT_CYAN		10
+#define SORTRON_PAINT_PURPLE	11
+#define SORTRON_PAINT_BLUE		12
+#define SORTRON_PAINT_BROWN		13
+#define SORTRON_PAINT_GREEN		14
+#define SORTRON_PAINT_RED		15
+#define SORTRON_PAINT_BLACK		16
 
 typedef struct SortronItem {
-	uint itemid;
-	uint unused;
+	uint id;
+	uint subid;
 	uint damage;
 	uint maxdamage;
 } SortronItem;

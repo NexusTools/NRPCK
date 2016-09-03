@@ -12,7 +12,7 @@ typedef struct NRPCKDevice {
 		Console console;
 		IOExpander ioexpander;
 		Activator activator;
-		Sortron sorttron;
+		Sortron sortron;
 		Matrix matrix;
 		Modem modem;
 		

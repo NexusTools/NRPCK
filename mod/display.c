@@ -54,10 +54,10 @@ uchar nrpck_display_bootscreen(const char* banner, NRPCKDeviceRef* display, NRPC
 	return y;
 }
 
-schar nrpck_display_boot(const char* banner, uchar port_start, uchar port_end, NRPCKDeviceRef** displayOut, NRPCKDeviceDriver** displayDriverOut, uchar* width, uchar* height, uchar* yOut, ...) {
+schar nrpck_display_boot(const char* banner, uchar port_start, uchar port_end, NRPCKDeviceRef** displayOut, NRPCKDeviceDriver** displayDriverOut, uchar* widthOut, uchar* heightOut, uchar* yOut, ...) {
 	NRPCKDeviceDriver* displayDriver, **refDriver;
 	NRPCKDeviceRef* display, **ref;
-	uchar device_type;
+	uchar device_type, width, height;
 	char str[80];
 	va_list ap;
 	uchar i, y;
@@ -77,7 +77,7 @@ schar nrpck_display_boot(const char* banner, uchar port_start, uchar port_end, N
 		*yOut = y;
 	return ERROR_GENERIC;
 founddisplay:
-	y = nrpck_display_bootscreen(banner, display, displayDriver, width, height);
+	y = nrpck_display_bootscreen(banner, display, displayDriver, &width, &height);
 	
 	va_start(ap, yOut);
 	while(true) {
@@ -108,6 +108,10 @@ founddisplay:
 		if(!*ref) {
 			nrpck_device_remap(display);
 			nrpck_display_print("Device Not Found...", &y, width, height, display, displayDriver);
+			if(widthOut)
+				*widthOut = width;
+			if(heightOut)
+				*heightOut = height;
 			if(yOut)
 				*yOut = y;
 			va_end(ap);
@@ -116,6 +120,10 @@ founddisplay:
 	}
 	va_end(ap);
 		
+	if(widthOut)
+		*widthOut = width;
+	if(heightOut)
+		*heightOut = height;
 	if(yOut)
 		*yOut = y;
 	return 0;

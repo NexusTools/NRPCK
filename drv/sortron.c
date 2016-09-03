@@ -19,7 +19,46 @@ bool nrpck_drv_sortron_detect(NRPCKDevice* device) {
 	return device->ID == SORT_TRON_ID;
 }
 
-uchar nrpck_drv_sortron_powered_level(NRPCKDevice* device) {
+long nrpck_drv_sortron_count(NRPCKDevice* device) {
+	device->data.sortron.command = SORT_COUNT;
+	while(device->data.sortron.command == SORT_COUNT);
+	if(device->data.sortron.command == SORT_FAILED)
+		return ERROR_GENERIC;
+	return device->data.sortron.slot;
+}
+
+schar nrpck_drv_sortron_load(NRPCKDevice* device, uint slot, SortronItem* item) {
+	device->data.sortron.slot = slot;
+	device->data.sortron.command = SORT_LOAD;
+	while(device->data.sortron.command == SORT_LOAD);
+	if(device->data.sortron.command == SORT_FAILED)
+		return ERROR_GENERIC;
+	
+	memcpy(item, &device->data.sortron.item, sizeof(SortronItem));
+	return 0;
+}
+
+schar nrpck_drv_sortron_pull(NRPCKDevice* device, uchar count, uchar color) {
+	device->data.sortron.count = count;
+	device->data.sortron.outputColor = color;
+	device->data.sortron.command = SORT_PULL;
+	while(device->data.sortron.command == SORT_PULL);
+	if(device->data.sortron.command == SORT_FAILED)
+		return ERROR_GENERIC;
+	return 0;
+}
+
+schar nrpck_drv_sortron_match(NRPCKDevice* device, uchar count, uchar color) {
+	device->data.sortron.count = count;
+	device->data.sortron.outputColor = color;
+	device->data.sortron.command = SORT_MATCH;
+	while(device->data.sortron.command == SORT_MATCH);
+	if(device->data.sortron.command == SORT_FAILED)
+		return ERROR_GENERIC;
+	return 0;
+}
+
+uchar nrpck_drv_sortron_powered_level(NRPCKDevice*) {
 	return 100;
 }
 
@@ -31,6 +70,10 @@ void nrpck_init_driver_sortron() {
 	nrpck_drv_sortron.name = "RedPower Sorttron Driver";
 	nrpck_drv_sortron.device_type = SORTRON_TYPE;
 	nrpck_drv_sortron.detect = nrpck_drv_sortron_detect;
+	nrpck_drv_sortron.methods[0] = nrpck_drv_sortron_count;
+	nrpck_drv_sortron.methods[1] = nrpck_drv_sortron_load;
+	nrpck_drv_sortron.methods[2] = nrpck_drv_sortron_pull;
+	nrpck_drv_sortron.methods[3] = nrpck_drv_sortron_match;
 	nrpck_drv_sortron.methods[0xF] = nrpck_drv_sortron_describe;
 	nrpck_device_register_driver(&nrpck_drv_sortron);
 	

@@ -2,7 +2,7 @@
 
 #include <string.h>
 
-extern uint _DATA_SIZE__;
+extern ulong _DATA_SIZE__;
 
 uchar oninitlength = 0;
 uint nrpck_ram_start;
@@ -23,7 +23,7 @@ void nrpck_oninit(void (*oninit)(void)) {
 void nrpck_init() {
 	uchar i;
 	uint t;
-	t = nrpck_ram_start = 0xA000;
+	t = nrpck_ram_start = _DATA_SIZE__;
 	do {
 		*((unsigned char*)t) = 127;
 		if(*((unsigned char*)t) != 127)
