@@ -8,6 +8,10 @@ void nrpck_init(void);
 void nrpck_oninit(void (*oninit)(void));
 
 void nrpck_hault(void);
+void nrpck_sleep10ms(void);
+void nrpck_sleep50ms(void);
+void nrpck_sleep100ms(void);
+void nprck_noop(void);
 
 uint nrpck_memory_detect(void);
 uint __fastcall__ nrpck_memory_available(void);

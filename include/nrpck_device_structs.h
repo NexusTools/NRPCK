@@ -21,9 +21,11 @@ typedef struct Console {
 	char blit_width;
 	char blit_height;
 
-	unsigned int padding; 
+	uchar blit_colour;
+	uchar special_command;
 
 	char display[0x50];
+	uchar red, green, blue;
 } Console;
 
 typedef struct IOExpander {
@@ -77,41 +79,22 @@ typedef struct ConsoleRouter {
 
 typedef struct Modem {
 	union ModemBuffer {
-		char all[0xA0];
-		struct ModemDuplex {
-			char in[0x50];
-			char out[0x50];
+		char raw[0xF0];
+		struct DuplexBuffer {
+			char in[0x78];
+			char out[0x78];
 		} duplex;
 	} buffer;
-	schar command;
-	uchar mode;
-	uchar len;
+	schar incmd;
+	schar outcmd;
+	uchar inlen;
+	uchar outlen;
 	uchar index;
-	uchar rbuffer;
-	uchar wbuffer;
+	uchar inout; // 0 - in, 1 - out, 2 - duplex
 } Modem;
-
-#define SORTRON_PAINT_NONE		0
-#define SORTRON_PAINT_WHITE		1
-#define SORTRON_PAINT_ORANGE	2
-#define SORTRON_PAINT_MAGENTA	3
-#define SORTRON_PAINT_LBLUE		4
-#define SORTRON_PAINT_YELLOW	5
-#define SORTRON_PAINT_LIME		6
-#define SORTRON_PAINT_PINK		7
-#define SORTRON_PAINT_GRAY		8
-#define SORTRON_PAINT_LGRAY		9
-#define SORTRON_PAINT_CYAN		10
-#define SORTRON_PAINT_PURPLE	11
-#define SORTRON_PAINT_BLUE		12
-#define SORTRON_PAINT_BROWN		13
-#define SORTRON_PAINT_GREEN		14
-#define SORTRON_PAINT_RED		15
-#define SORTRON_PAINT_BLACK		16
 
 typedef struct SortronItem {
 	uint id;
-	uint subid;
 	uint damage;
 	uint maxdamage;
 } SortronItem;
@@ -120,7 +103,10 @@ typedef struct Sortron {
 	uchar command;
 	uchar count;
 	uint slot;
-	SortronItem item;
+	uint item_id;
+	uint unused;
+	uint item_damage;
+	uint item_maxdamage;
 	uchar outputColor;
 	uchar inputColor;
 } Sortron;

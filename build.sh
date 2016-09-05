@@ -8,7 +8,7 @@ echo "Compiling NRPCKernel...";
 
 echo "Assembling NRPCKernel...";
 ../../bin/ca65 -t none --cpu 65c02 -I../../lib/asminc bin/nrpck.s -o bin/nrpck.o
-../../bin/ca65 -t none --cpu 65c02 -I../../lib/asminc mod/hault.s -o bin/nrpck_hault.o
+../../bin/ca65 -t none --cpu 65c02 -I../../lib/asminc mod/asm.s -o bin/nrpck_asm.o
 
 echo "Compiling Modules..."
 ../../bin/cc65 -O -T -t none --cpu 65c02 -I../../include -Iinclude mod/device.c -o bin/device.s --codesize 100
@@ -25,7 +25,7 @@ echo "Assembling Modules..."
 #../../bin/ca65 -t none --cpu 65c02 -I../../lib/asminc bin/socket.s -o bin/socket.o
 
 echo "Compiling Drivers..."
-#../../bin/cc65 -O -T -t none --cpu 65c02 -I../../include -Iinclude drv/modem.c -o bin/nrpck_drv_modem.s --codesize 100
+../../bin/cc65 -O -T -t none --cpu 65c02 -I../../include -Iinclude drv/modem.c -o bin/nrpck_drv_modem.s --codesize 100
 ../../bin/cc65 -O -T -t none --cpu 65c02 -I../../include -Iinclude drv/sortron.c -o bin/nrpck_drv_sortron.s --codesize 100
 ../../bin/cc65 -O -T -t none --cpu 65c02 -I../../include -Iinclude drv/ioexpander.c -o bin/nrpck_drv_ioexpander.s --codesize 100
 ../../bin/cc65 -O -T -t none --cpu 65c02 -I../../include -Iinclude drv/console.c -o bin/nrpck_drv_console.s --codesize 100
@@ -33,7 +33,7 @@ echo "Compiling Drivers..."
 ../../bin/cc65 -O -T -t none --cpu 65c02 -I../../include -Iinclude drv/disk.c -o bin/nrpck_drv_disk.s --codesize 100
 
 echo "Assembling Drivers...";
-#../../bin/ca65 -t none --cpu 65c02 -I../../lib/asminc bin/nrpck_drv_modem.s -o bin/nrpck_drv_modem.o
+../../bin/ca65 -t none --cpu 65c02 -I../../lib/asminc bin/nrpck_drv_modem.s -o bin/nrpck_drv_modem.o
 ../../bin/ca65 -t none --cpu 65c02 -I../../lib/asminc bin/nrpck_drv_sortron.s -o bin/nrpck_drv_sortron.o
 ../../bin/ca65 -t none --cpu 65c02 -I../../lib/asminc bin/nrpck_drv_ioexpander.s -o bin/nrpck_drv_ioexpander.o
 ../../bin/ca65 -t none --cpu 65c02 -I../../lib/asminc bin/nrpck_drv_console.s -o bin/nrpck_drv_console.o
@@ -41,13 +41,13 @@ echo "Assembling Drivers...";
 ../../bin/ca65 -t none --cpu 65c02 -I../../lib/asminc bin/nrpck_drv_disk.s -o bin/nrpck_drv_disk.o
 
 echo "Combining into Libs...";
-../../bin/ar65 a bin/nrpck.lib bin/nrpck.o bin/nrpck_hault.o
+../../bin/ar65 a bin/nrpck.lib bin/nrpck.o bin/nrpck_asm.o
 ../../bin/ar65 a bin/nrpck_device.lib bin/device.o
 ../../bin/ar65 a bin/nrpck_display.lib bin/display.o
 #../../bin/ar65 a bin/nrpck_drive.lib bin/drive.o
 ../../bin/ar65 a bin/nrpck_filesystem.lib bin/filesystem.o
 #../../bin/ar65 a bin/nrpck_socket.lib bin/socket.o
-#../../bin/ar65 a bin/nrpck_drv_modem.lib bin/nrpck_drv_modem.o
+../../bin/ar65 a bin/nrpck_drv_modem.lib bin/nrpck_drv_modem.o
 ../../bin/ar65 a bin/nrpck_drv_sortron.lib bin/nrpck_drv_sortron.o
 ../../bin/ar65 a bin/nrpck_drv_console.lib bin/nrpck_drv_console.o
 ../../bin/ar65 a bin/nrpck_drv_matrix.lib bin/nrpck_drv_matrix.o

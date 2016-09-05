@@ -19,7 +19,7 @@
 NRPCKDeviceDriver nrpck_drv_disk;
 
 bool nrpck_drv_disk_detect(NRPCKDevice* device) {
-	return device->ID == DISK_ID;
+	return device->ID == DISK_ID || device->ID == HARDDRIVE_ID;
 }
 
 uint nrpck_drv_disk_size(NRPCKDevice* device) {
@@ -33,73 +33,45 @@ uint nrpck_drv_disk_size(NRPCKDevice* device) {
 	}
 }
 
-int nrpck_drv_disk_read(NRPCKDevice* device, uint pos, char* buffer, uchar len) {
-	unsigned int a, b, c, d;
-	a = pos / 128;
-	b = pos - (a*128);
-	c = (pos+len-1) / 128;
+int nrpck_drv_disk_read(NRPCKDevice* device, uint sector, uchar pos, char* buffer, uchar len) {
+	device->data.disk.sector_num = sector;
+	device->data.disk.command = DISK_READ;
+	while(device->data.disk.command == DISK_READ);
+	if(device->data.disk.command == DISK_FAIL)
+		return ERROR_READ;
+	memcpy(buffer, device->data.disk.sector+pos, len);
+	return len;
+}
 
-	if(a == c) {
-		device->data.disk.sector_num = a;
+int nrpck_drv_disk_write(NRPCKDevice* device, uint sector, uchar pos, char* buffer, uchar len) {
+	device->data.disk.sector_num = sector;
+	if(len < 127) {
 		device->data.disk.command = DISK_READ;
 		while(device->data.disk.command == DISK_READ);
 		if(device->data.disk.command == DISK_FAIL)
 			return ERROR_READ;
-		memcpy(buffer, device->data.disk.sector+b, len);
-	} else {
-		d = (pos+len-1) - (c*128);
-		return ERROR_GENERIC;
 	}
+	memcpy(device->data.disk.sector+pos, buffer, len);
+	device->data.disk.command = DISK_WRITE;
+	while(device->data.disk.command == DISK_WRITE);
+	if(device->data.disk.command == DISK_FAIL)
+		return ERROR_WRITE;
 	return len;
 }
 
-int nrpck_drv_disk_write(NRPCKDevice* device, uint pos, char* buffer, uchar len) {
-	unsigned int a, b, c, d;
-	a = pos / 128;
-	b = pos - (a*128);
-	c = (pos+len-1) / 128;
-
-	if(a == c) {
-		device->data.disk.sector_num = a;
-		if(len < 127) {
-			device->data.disk.command = DISK_READ;
-			while(device->data.disk.command == DISK_READ);
-			if(device->data.disk.command == DISK_FAIL)
-				return ERROR_READ;
-		}
-		memcpy(device->data.disk.sector+b, buffer, len);
-		device->data.disk.command = DISK_WRITE;
-		while(device->data.disk.command == DISK_WRITE);
-		if(device->data.disk.command == DISK_FAIL)
-			return ERROR_WRITE;
-	} else {
-		d = (pos+len-1) - (c*128);
-		return ERROR_GENERIC;
-	}
-	return len;
-}
-
-int nrpck_drv_disk_fastwrite(NRPCKDevice* device, uint pos, char* buffer, uchar len) {
-	unsigned int a, b, c, d;
-	
-	a = pos / 128;
-	b = pos - (a*128);
-	c = (pos+len-1) / 128;
-
-	if(a == c) {
-		device->data.disk.sector_num = a;
-		memcpy(device->data.disk.sector+b, buffer, len);
-		device->data.disk.command = DISK_WRITE;
-		while(device->data.disk.command == DISK_WRITE);
-		if(device->data.disk.command == DISK_FAIL)
-			return ERROR_WRITE;
-	} else {
-		d = (pos+len-1) - (c*128);
-		return ERROR_GENERIC;
-	}
+int nrpck_drv_disk_fastwrite(NRPCKDevice* device, uint sector, uchar pos, char* buffer, uchar len) {
+	device->data.disk.sector_num = sector;
+	memcpy(device->data.disk.sector+pos, buffer, len);
+	device->data.disk.command = DISK_WRITE;
+	while(device->data.disk.command == DISK_WRITE);
+	if(device->data.disk.command == DISK_FAIL)
+		return ERROR_WRITE;
 	return len;
 }
 schar nrpck_drv_disk_getlabel(NRPCKDevice* device, char* buffer) {
+	if(device->ID == HARDDRIVE_ID)
+		return ERROR_GENERIC;
+	
 	device->data.disk.command = DISK_READ_NAME;
 	while(device->data.disk.command == DISK_READ_NAME);
 	if(device->data.disk.command == DISK_FAIL)
@@ -108,6 +80,9 @@ schar nrpck_drv_disk_getlabel(NRPCKDevice* device, char* buffer) {
 	return strlen(buffer);
 }
 schar nrpck_drv_disk_setlabel(NRPCKDevice* device, char* buffer) {
+	if(device->ID == HARDDRIVE_ID)
+		return ERROR_GENERIC;
+	
 	strcpy(device->data.disk.sector, buffer);
 	device->data.disk.command = DISK_WRITE_NAME;
 	while(device->data.disk.command == DISK_WRITE_NAME);
@@ -134,6 +109,9 @@ void nrpck_drv_disk_describe(NRPCKDevice* device, char* buffer) {
 
 	sprintf(buffer, "  [%-16s] %s", serial, label);
 }
+uchar nrpck_drive_drv_sectorsize(NRPCKDevice*) {
+	return 128;
+}
 void nrpck_init_driver_disk() {
 	nrpck_drv_disk.name = "RedPower Disk Driver";
 	nrpck_drv_disk.device_type = DISK_TYPE;
@@ -145,6 +123,7 @@ void nrpck_init_driver_disk() {
 	nrpck_drv_disk.methods[4] = nrpck_drv_disk_getlabel;
 	nrpck_drv_disk.methods[5] = nrpck_drv_disk_setlabel;
 	nrpck_drv_disk.methods[6] = nrpck_drv_disk_getserial;
+	nrpck_drv_disk.methods[0xA] = nrpck_drive_drv_sectorsize;
 	nrpck_drv_disk.methods[0xF] = nrpck_drv_disk_describe;
 	nrpck_device_register_driver(&nrpck_drv_disk);
 }

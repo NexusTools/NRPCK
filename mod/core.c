@@ -13,6 +13,10 @@ union NRPCKCoreData {
 	void (*oninit[0x20])(void);
 } nrpck_core;
 
+void nrpck_noop() {
+	
+}
+
 void nrpck_oninit(void (*oninit)(void)) {
 	if(oninitlength >= 0x20)
 		return;
@@ -23,7 +27,7 @@ void nrpck_oninit(void (*oninit)(void)) {
 void nrpck_init() {
 	uchar i;
 	uint t;
-	t = nrpck_ram_start = _DATA_SIZE__;
+	t = nrpck_ram_start = 0xA000;
 	do {
 		*((unsigned char*)t) = 127;
 		if(*((unsigned char*)t) != 127)

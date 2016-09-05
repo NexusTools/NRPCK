@@ -40,6 +40,14 @@ void nrpck_drv_console_size(NRPCKDevice*, uchar* width, uchar* height) {
 		*height = 50;
 }
 
+void nrpck_drv_console_initcolours(uchar* palette) {
+	// TODO
+}
+
+void nrpck_drv_console_setcursorcolour(NRPCKDevice* device, uchar colour) {
+	device->data.console.blit_colour = colour;
+}
+
 uchar nrpck_drv_console_nextkey(NRPCKDevice* device) {
 	uchar key;
 	if (device->data.console.kb_pos != device->data.console.kb_start) {
@@ -68,6 +76,8 @@ void nrpck_init_driver_console() {
 	nrpck_drv_console_display.methods[3] = nrpck_drv_console_movecursor;
 	nrpck_drv_console_display.methods[4] = nrpck_drv_console_setcursor;
 	nrpck_drv_console_display.methods[5] = nrpck_drv_console_size;
+	nrpck_drv_console_display.methods[6] = nrpck_drv_console_initcolours;
+	nrpck_drv_console_display.methods[7] = nrpck_drv_console_setcursorcolour;
 	nrpck_drv_console_display.methods[0xF] = nrpck_drv_console_display_describe;
 	nrpck_device_register_driver(&nrpck_drv_console_display);
 	

@@ -63,6 +63,13 @@ schar nrpck_device_scanfordriver(uchar min_port, uchar max_port, uchar device_ty
  */
 uchar nrpck_device_knownid(uchar port);
 
+#define nrpck_device_nextkey(device, driver) \
+	nrpck_device_remap(device); \
+	nrpck_device_drv_nextkey(device->device, driver)
+
+#define nrpck_device_drv_nextkey(device, driver) \
+	((char(*)(NRPCKDevice*))driver->methods[0])(device)
+
 #define nrpck_device_drv_describe(device, driver, buffer) \
 	((void(*)(NRPCKDevice*, char*))driver->methods[0xF])(device, buffer)
 

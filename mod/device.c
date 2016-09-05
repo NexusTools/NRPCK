@@ -69,7 +69,7 @@ const char* nrpck_device_name(uchar id) {
 		case RETRIEVER_ID:
 			return "Retriever";
 
-		case HARD_DRIVE_ID:
+		case HARDDRIVE_ID:
 			return "Hard Drive";
 
 		case FPU_ID:

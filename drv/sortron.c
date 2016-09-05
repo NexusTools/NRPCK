@@ -34,7 +34,9 @@ schar nrpck_drv_sortron_load(NRPCKDevice* device, uint slot, SortronItem* item) 
 	if(device->data.sortron.command == SORT_FAILED)
 		return ERROR_GENERIC;
 	
-	memcpy(item, &device->data.sortron.item, sizeof(SortronItem));
+	item->id = device->data.sortron.item_id;
+	item->damage = device->data.sortron.item_damage;
+	item->maxdamage = device->data.sortron.item_maxdamage;
 	return 0;
 }
 

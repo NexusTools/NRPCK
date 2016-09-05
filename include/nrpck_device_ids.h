@@ -7,7 +7,7 @@
 #define IO_EXPANDER_ID			0X03
 #define SORT_TRON_ID			0X04
 #define RETRIEVER_ID			0X05
-#define HARD_DRIVE_ID			0X06
+#define HARDDRIVE_ID			0X06
 #define FPU_ID					0X07
 #define SUBSPACE_ACTIVATOR_ID	0X08
 #define MATRIX_ID				0X09

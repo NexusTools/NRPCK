@@ -29,4 +29,6 @@
 #define ulong unsigned long
 #endif
 
+#define voidmethod void(*)(void)
+
 #endif
