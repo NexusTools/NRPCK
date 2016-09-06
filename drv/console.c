@@ -1,4 +1,4 @@
-#include "nrpck_devices.h"
+#include "nrpck.h"
 #include "nrpck_drv_console.h"
 
 #include <string.h>
@@ -40,12 +40,42 @@ void nrpck_drv_console_size(NRPCKDevice*, uchar* width, uchar* height) {
 		*height = 50;
 }
 
-void nrpck_drv_console_initcolours(uchar* palette) {
-	// TODO
+void nrpck_drv_console_initcolours(NRPCKDevice* device, uchar* palette) {
+	uint i, count;
+	
+	count = (*palette)*3;
+	palette++;
+	for(i=0;i<count;i+=3) {
+		device->data.console.red = *palette;
+		device->data.console.green = *(palette+1);
+		device->data.console.blue = *(palette+2);
+		device->data.console.special_command = 1;
+		while(device->data.console.special_command == 1) {nrpck_sleep10ms();}
+	}
 }
 
 void nrpck_drv_console_setcursorcolour(NRPCKDevice* device, uchar colour) {
 	device->data.console.blit_colour = colour;
+}
+
+void nrpck_drv_console_setcursorbgcolour(NRPCKDevice* device, uchar colour) {
+	device->data.console.blit_bgcolour = colour;
+}
+
+schar nrpck_drv_console_scrollup(NRPCKDevice* device, uchar by) {
+	uchar i;
+	
+	i = 50-by;
+	device->data.console.blit_start_x = 0;
+    device->data.console.blit_start_y = by;
+    device->data.console.blit_offset_x = 0;
+    device->data.console.blit_offset_y = 0;
+    device->data.console.blit_width = 80;
+    device->data.console.blit_height = i;
+    device->data.console.blit_mode = 3;
+    while (device->data.console.blit_mode != 0) {nrpck_sleep10ms();}
+	
+	return 0;
 }
 
 uchar nrpck_drv_console_nextkey(NRPCKDevice* device) {
@@ -78,6 +108,8 @@ void nrpck_init_driver_console() {
 	nrpck_drv_console_display.methods[5] = nrpck_drv_console_size;
 	nrpck_drv_console_display.methods[6] = nrpck_drv_console_initcolours;
 	nrpck_drv_console_display.methods[7] = nrpck_drv_console_setcursorcolour;
+	nrpck_drv_console_display.methods[8] = nrpck_drv_console_setcursorbgcolour;
+	nrpck_drv_console_display.methods[9] = nrpck_drv_console_scrollup;
 	nrpck_drv_console_display.methods[0xF] = nrpck_drv_console_display_describe;
 	nrpck_device_register_driver(&nrpck_drv_console_display);
 	

@@ -13,6 +13,7 @@ void nrpck_sleep50ms(void);
 void nrpck_sleep100ms(void);
 void nprck_noop(void);
 
+uint nrpck_bss_end(void);
 uint nrpck_memory_detect(void);
 uint __fastcall__ nrpck_memory_available(void);
 void* __fastcall__ nrpck_memory_alloc(unsigned char size);
@@ -37,6 +38,9 @@ void __fastcall__ nrpck_memory_dealloc(void*);
 #endif
 #ifndef NRPCK_NO_SOCKET
 #include "nrpck_socket.h"
+#endif
+#ifndef NRPCK_NO_REBOOT
+#include "nrpck_reboot.h"
 #endif
 #endif
 

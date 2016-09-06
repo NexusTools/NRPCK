@@ -16,6 +16,7 @@ echo "Compiling Modules..."
 #../../bin/cc65 -O -T -t none --cpu 65c02 -I../../include -Iinclude mod/drive.c -o bin/drive.s --codesize 100
 ../../bin/cc65 -O -T -t none --cpu 65c02 -I../../include -Iinclude mod/filesystem.c -o bin/filesystem.s --codesize 100
 #../../bin/cc65 -O -T -t none --cpu 65c02 -I../../include -Iinclude mod/socket.c -o bin/socket.s --codesize 100
+../../bin/cc65 -O -T -t none --cpu 65c02 -I../../include -Iinclude mod/reboot.c -o bin/reboot.s --codesize 100
 
 echo "Assembling Modules..."
 ../../bin/ca65 -t none --cpu 65c02 -I../../lib/asminc bin/device.s -o bin/device.o
@@ -23,6 +24,7 @@ echo "Assembling Modules..."
 #../../bin/ca65 -t none --cpu 65c02 -I../../lib/asminc bin/drive.s -o bin/drive.o
 ../../bin/ca65 -t none --cpu 65c02 -I../../lib/asminc bin/filesystem.s -o bin/filesystem.o
 #../../bin/ca65 -t none --cpu 65c02 -I../../lib/asminc bin/socket.s -o bin/socket.o
+../../bin/ca65 -t none --cpu 65c02 -I../../lib/asminc bin/reboot.s -o bin/reboot.o
 
 echo "Compiling Drivers..."
 ../../bin/cc65 -O -T -t none --cpu 65c02 -I../../include -Iinclude drv/modem.c -o bin/nrpck_drv_modem.s --codesize 100
@@ -46,7 +48,8 @@ echo "Combining into Libs...";
 ../../bin/ar65 a bin/nrpck_display.lib bin/display.o
 #../../bin/ar65 a bin/nrpck_drive.lib bin/drive.o
 ../../bin/ar65 a bin/nrpck_filesystem.lib bin/filesystem.o
-#../../bin/ar65 a bin/nrpck_socket.lib bin/socket.o
+#../../bin/ar65 a bin/nrpck_socket.lib bin/socket.
+../../bin/ar65 a bin/nrpck_reboot.lib bin/reboot.o
 ../../bin/ar65 a bin/nrpck_drv_modem.lib bin/nrpck_drv_modem.o
 ../../bin/ar65 a bin/nrpck_drv_sortron.lib bin/nrpck_drv_sortron.o
 ../../bin/ar65 a bin/nrpck_drv_console.lib bin/nrpck_drv_console.o

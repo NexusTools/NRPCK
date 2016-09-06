@@ -1,6 +1,6 @@
 .include "mmu.inc"
 
-.export _nrpck_hault, _nrpck_sleep10ms, _nrpck_sleep50ms, _nrpck_sleep100ms
+.export _nrpck_hault, _nrpck_sleep10ms, _nrpck_sleep50ms, _nrpck_sleep100ms, _nrpck_bss_end
 
 
 .segment	"CODE"
@@ -31,3 +31,11 @@
 	rts
 .endproc
 
+
+.segment	"CODE"
+.proc	_nrpck_bss_end: near
+.segment	"CODE"
+	ldx     #$3E
+	lda     #$80
+	rts
+.endproc

@@ -5,7 +5,6 @@
 extern ulong _DATA_SIZE__;
 
 uchar oninitlength = 0;
-uint nrpck_ram_start;
 uint nrpck_ram_available;
 uint nrpck_ram_size;
 uint nrpck_ram_end;
@@ -25,9 +24,9 @@ void nrpck_oninit(void (*oninit)(void)) {
 }
 
 void nrpck_init() {
+	uint nrpck_ram_start, t;
 	uchar i;
-	uint t;
-	t = nrpck_ram_start = 0xA000;
+	t = nrpck_ram_start = nrpck_bss_end();
 	do {
 		*((unsigned char*)t) = 127;
 		if(*((unsigned char*)t) != 127)
@@ -49,7 +48,7 @@ uint nrpck_memory_available() {
 uint nrpck_ram_alloc = 0;
 void* nrpck_memory_alloc(unsigned char size) {
 	void* ptr;
-	ptr = (void*)(nrpck_ram_start+nrpck_ram_alloc);
+	ptr = (void*)(nrpck_bss_end()+nrpck_ram_alloc);
 	nrpck_ram_alloc += size;
 	return ptr;
 }

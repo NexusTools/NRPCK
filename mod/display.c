@@ -4,22 +4,29 @@
 #include <string.h>
 #include <stdio.h>
 
-#define DISK_ID_ADDR		0x0000
 #define CONSOLE_ID_ADDR		0x0001
 
 void nrpck_display_drv_print0(NRPCKDevice* display, NRPCKDeviceDriver* displayDriver, const char* line, uchar len, uchar* y, uchar width, uchar height) {
 	if(len > width) {
 		nrpck_display_drv_line(display, displayDriver, 0, *y, line, width);
 		*y = *y + 1;
-		if(*y >= height)
-			*y = 0;
+		if(*y >= height) {
+			if(nrpck_display_drv_scrollup(display, displayDriver, 1) < 0)
+				*y = 0;
+			else
+				*y = height-1;
+		}
 		nrpck_display_drv_set(display, displayDriver, 0, *y, ' ', width);
 		nrpck_display_drv_print0(display, displayDriver, line+width, len-width, y, width, height);
 	} else {
 		nrpck_display_drv_line(display, displayDriver, 0, *y, line, len);
 		*y = *y + 1;
-		if(*y >= height)
-			*y = 0;
+		if(*y >= height) {
+			if(nrpck_display_drv_scrollup(display, displayDriver, 1) < 0)
+				*y = 0;
+			else
+				*y = height-1;
+		}
 		nrpck_display_drv_set(display, displayDriver, 0, *y, ' ', width);
 	}
 }
@@ -34,6 +41,8 @@ uchar nrpck_display_drv_bootscreen(NRPCKDevice* display, NRPCKDeviceDriver* disp
 	y = 0;
 	nrpck_display_drv_setcursor(display, displayDriver, false);
 	nrpck_display_drv_size(display, displayDriver, &width, &height);
+	nrpck_display_drv_initcolourcga(display, displayDriver);
+	nrpck_display_drv_setcursorbgcolour(display, displayDriver, 15);
 	nrpck_display_drv_clear(display, displayDriver, i, width, height);
 	
 	nrpck_display_drv_setcursorcolour(display, displayDriver, 13);

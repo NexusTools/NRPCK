@@ -47,9 +47,15 @@ void nrpck_display_drv_print(NRPCKDevice* display, NRPCKDeviceDriver* displayDri
 	((void(*)(NRPCKDevice*, uchar*))driver->methods[6])(displayDevice, palette)
 
 #define nrpck_display_drv_initcolourcga(displayDevice, driver) \
-	((void(*)(NRPCKDevice*, uchar*))driver->methods[6])(displayDevice, 0)
+	((void(*)(NRPCKDevice*, uchar*))driver->methods[6])(displayDevice, "\x10\xff\xff\xff\x00\x00\xaa\x00\xaa\x00\x00\xaa\xaa\xaa\x00\x00\xaa\x00\xaa\xaa\x55\x00\xaa\xaa\xaa\x55\x55\x55\x55\x55\xff\x55\xff\x55\x55\xff\xff\xff\x55\x55\xff\x55\xff\xff\xff\x55\x00\x00\x00")
 
 #define nrpck_display_drv_setcursorcolour(displayDevice, driver, colour) \
 	((void(*)(NRPCKDevice*, uchar))driver->methods[7])(displayDevice, colour)
+
+#define nrpck_display_drv_setcursorbgcolour(displayDevice, driver, colour) \
+	((void(*)(NRPCKDevice*, uchar))driver->methods[8])(displayDevice, colour)
+
+#define nrpck_display_drv_scrollup(displayDevice, driver, by) \
+	((schar(*)(NRPCKDevice*, uchar))driver->methods[9])(displayDevice, by)
 
 #endif

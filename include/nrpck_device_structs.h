@@ -25,7 +25,7 @@ typedef struct Console {
 	uchar special_command;
 
 	char display[0x50];
-	uchar red, green, blue;
+	uchar red, green, blue, blit_bgcolour;
 } Console;
 
 typedef struct IOExpander {
