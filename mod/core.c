@@ -26,6 +26,8 @@ void nrpck_oninit(void (*oninit)(void)) {
 void nrpck_init() {
 	uint nrpck_ram_start, t;
 	uchar i;
+	
+	*((char*)0x04FF) = 0xFF;
 	t = nrpck_ram_start = nrpck_bss_end();
 	do {
 		*((unsigned char*)t) = 127;
