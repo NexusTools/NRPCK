@@ -11,7 +11,7 @@ void nrpck_reboot_init() {
 }
 
 void nrpck_reboot(uchar disk_port) {
-	memcpy((char*)0x0400, nrpck_bootloader, 0xFE);
+	memcpy((char*)0x0400, nrpck_bootloader, 0xFF);
 	*((char*)0x04FF) = *((char*)DISK_ID_ADDR);
 	*((char*)DISK_ID_ADDR) = disk_port;
 	((void(*)(void))0x0400)();
