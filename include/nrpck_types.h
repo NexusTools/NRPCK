@@ -1,6 +1,10 @@
 #ifndef NRPCK_TYPES
 #define NRPCK_TYPES 1
 
+#ifdef _NB
+#define __fastcall__
+#endif
+
 #ifndef true
 #define true 1
 #endif

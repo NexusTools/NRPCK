@@ -1,0 +1,22 @@
+if(NOT DEFINED CC65_DIR)
+    MESSAGE(FATAL_ERROR "CC65_DIR is not defined")
+endif()
+
+if (WIN32)
+    set(CC65 ${CC65_DIR}/bin/cc65.exe)
+    set(CA65 ${CC65_DIR}/bin/ca65.exe)
+    set(AR65 ${CC65_DIR}/bin/ar65.exe)
+    set(LD65 ${CC65_DIR}/bin/ld65.exe)
+else ()
+    set(CC65 ${CC65_DIR}/bin/cc65)
+    set(CA65 ${CC65_DIR}/bin/ca65)
+    set(AR65 ${CC65_DIR}/bin/ar65)
+    set(LD65 ${CC65_DIR}/bin/ld65)
+endif ()
+set(ALIGN ${CMAKE_CURRENT_SOURCE_DIR}/bin/align)
+
+project (NRPCK NONE)
+cmake_minimum_required (VERSION 2.8)
+
+add_subdirectory (src)
+add_subdirectory (examples)

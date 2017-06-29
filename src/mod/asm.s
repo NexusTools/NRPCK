@@ -1,13 +1,27 @@
 .include "mmu.inc"
 
-.export _nrpck_hault, _nrpck_sleep10ms, _nrpck_sleep50ms, _nrpck_sleep100ms, _nrpck_bss_end
+.export _nrpck_enable_rb, _nrpck_map_rb, _nrpck_hault, _nrpck_sleep10ms, _nrpck_sleep50ms, _nrpck_sleep100ms, _nrpck_bss_end
 
+
+.segment	"CODE"
+.proc	_nrpck_enable_rb: near
+.segment	"CODE"
+        mmu $02
+        rts
+.endproc
+
+.segment	"CODE"
+.proc	_nrpck_map_rb: near
+.segment	"CODE"
+        mmu $00
+        rts
+.endproc
 
 .segment	"CODE"
 .proc	_nrpck_hault: near
 .segment	"CODE"
-	mmu $4D
-	L0043:	bra     L0043
+	L0043:	mmu $4D
+	bra     L0043
 .endproc
 
 .segment	"CODE"

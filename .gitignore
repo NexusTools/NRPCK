@@ -1,4 +1,2 @@
-bin
-
-*.o
-*.lib
+build
+nbproject/private

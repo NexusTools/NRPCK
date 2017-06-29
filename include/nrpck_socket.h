@@ -12,10 +12,13 @@
 #define nrpck_socket_drv_disconnect(device, driver, index) \
 	((void(*)(NRPCKDevice*, uchar))driver->methods[2])(device, index)
 
-#define nrpck_socket_drv_read(device, driver, buffer, len, index, tick) \
-	((int(*)(NRPCKDevice*, char*, uchar, uchar, voidmethod))driver->methods[3])(device, buffer, len, index, tick)
+#define nrpck_socket_drv_read(device, driver, buffer, len, tick) \
+	((int(*)(NRPCKDevice*, char*, uchar, voidmethod))driver->methods[3])(device, buffer, len, tick)
 
-#define nrpck_socket_drv_write(device, driver, buffer, len, index, tick) \
-	((int(*)(NRPCKDevice*, char*, uchar, uchar, voidmethod))driver->methods[4])(device, buffer, len, index, tick)
+#define nrpck_socket_drv_write(device, driver, buffer, len, tick) \
+	((int(*)(NRPCKDevice*, char*, uchar, voidmethod))driver->methods[4])(device, buffer, len, tick)
+
+#define nrpck_socket_drv_switch(device, index) \
+	((int(*)(NRPCKDevice*, uchar))driver->methods[5])(device, index)
 
 #endif

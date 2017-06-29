@@ -5,11 +5,13 @@
 
 typedef struct NRPCKFileSystem {
 	const char* name;
-	signed char (*detect)(NRPCKDevice* device, NRPCKDeviceDriver* driver);
-	signed char (*format)(NRPCKDevice* device, NRPCKDeviceDriver* driver);
+	schar (*detect)(NRPCKDevice* device, NRPCKDeviceDriver* driver);
+	schar (*format)(NRPCKDevice* device, NRPCKDeviceDriver* driver);
 } NRPCKFileSystem;
 
 schar nrpck_filesystem_detect(NRPCKDevice* device, NRPCKDeviceDriver* driver, char* fs);
+
+schar nrpck_filesystem_format(NRPCKDevice* device, NRPCKDeviceDriver* driver, char* fs);
 
 void nrpck_filesystem_register(NRPCKFileSystem* filesystem);
 
